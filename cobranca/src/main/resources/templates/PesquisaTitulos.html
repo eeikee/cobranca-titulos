@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="DefaultLayout">
+<head>
+<title>Pequisar título</title>
+</head>
+<section layout:fragment="conteudo">
+	<div class="card">
+		<div class="card-heading">
+			<div class="cleafix">
+				<h5 class="card-title eeikee-title-card">Pesquisar título</h5>
+				<a class="btn btn-link eeikee-link-card" href="/titulos/novo">Novo
+					Título</a>
+			</div>
+		</div>
+		<div class="card-body">
+			<table class="table table-bordered table-striped">
+				<thead>
+					<tr>
+						<th scope="col">#</th>
+						<th scope="col">Descrição</th>
+						<th scope="col">Data de nascimento</th>
+						<th scope="col">Valor</th>
+						<th scope="col">Status</th>
+						<th scope="col"></th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each="titulo : ${titulos}">
+						<td class="text-center" th:text="${titulo.codigo}">1</td>
+						<td th:text="${titulo.descricao}">1</td>
+						<td th:text="${{titulo.dataVencimento}}">1</td>
+						<td class="text-right" th:text="|R$ ${{titulo.valor}}|">1</td>
+						<td class="text-center">
+						<span class="badge" th:text="${titulo.status.descricao}" 
+							th:classappend="${titulo.pendente ? 'badge-danger' : 'badge-success'}">Success</span>
+						</td>
+						<td class="text-center"></td>
+					</tr>
+					<tr>
+						<td class="col-md-1" th:if="${#lists.isEmpty(titulos)}">Não foi encontrado</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</section>
+</html>
