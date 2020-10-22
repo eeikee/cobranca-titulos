@@ -5,16 +5,26 @@ xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 	
 <head>
 <meta charset="UTF-8">
+
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.4/css/bootstrap-datepicker.standalone.min.css" rel="stylesheet">
 <link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css">
 <link rel="stylesheet" type="text/css" href="/css/style.css">
+<link rel="stylesheet" type="text/css" href="/css/bootstrap-datepicker.standalone.min.css">
+
 </head>
 
 <body>
 	<header th:replace="Cabecalho"></header>
-	<section layout:fragment="conteudo">
-	</section>
+	<section layout:fragment="conteudo"></section>
 
 	<script src="/js/jquery-3.5.1.min.js"></script>
+	<script src="/js/popper.min.js"></script>
 	<script src="/js/bootstrap.min.js"></script>
+	<script src="/js/cobranca.js"></script>
+	<script src="/js/bootstrap-datepicker.min.js"></script>
+	<script src="/js/bootstrap-datepicker.pt-BR.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.4/js/bootstrap-datepicker.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.4/locales/bootstrap-datepicker.pt-BR.min.js"></script>
+	<script type="/js/jquery.maskMoney.min.js"></script>
 </body>
 </html>
