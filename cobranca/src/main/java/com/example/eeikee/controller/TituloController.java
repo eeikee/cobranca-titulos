@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.thymeleaf.spring5.expression.Mvc;
@@ -20,6 +22,8 @@ import org.thymeleaf.spring5.expression.Mvc;
 import com.example.eeikee.model.StatusTitulo;
 import com.example.eeikee.model.Titulo;
 import com.example.eeikee.repository.Titulos;
+import com.example.eeikee.repository.filter.TituloFilter;
+import com.example.eeikee.service.CadastroTituloService;
 
 import jdk.jshell.ErroneousSnippet;
 
@@ -30,7 +34,7 @@ public class TituloController {
 	private static final String CADASTRO_VIEW = "CadastroDeTitulo";
 	
 	@Autowired
-	private Titulos titulos;
+	private CadastroTituloService cadastroTituloService;
 
 	@RequestMapping("/novo")
 	public ModelAndView novoTitulo() {
@@ -45,19 +49,20 @@ public class TituloController {
 			return CADASTRO_VIEW;
 		}
 		try {
-			titulos.save(titulo);
+			cadastroTituloService.salvar(titulo);
 			redirectAttributes.addFlashAttribute("mensagem", "Titulo salvo com sucesso!");
 			return "redirect:/titulos/novo";
 		} catch (DataIntegrityViolationException e) {
-			error.rejectValue("dataVencimento", null, "Formato de data invalido");
+			error.rejectValue("dataVencimento", null, e.getMessage());
 			return CADASTRO_VIEW;
 		}	
 	}
 
 	@RequestMapping
-	public ModelAndView pesquisar() {
+	public ModelAndView pesquisar(@ModelAttribute("filtro")TituloFilter filtro) {
+		
+	List<Titulo> todosTitulos = cadastroTituloService.filtrar(filtro);
 		ModelAndView mView = new ModelAndView("PesquisaTitulos");
-		List<Titulo> todosTitulos = titulos.findAll();
 		mView.addObject("titulos", todosTitulos);
 		return mView;
 	}
@@ -71,9 +76,14 @@ public class TituloController {
 	
 	@RequestMapping(value="{codigo}", method = RequestMethod.DELETE)
 	public String excluir(@PathVariable Long codigo, RedirectAttributes attributes) {
-	titulos.deleteById(codigo);
+	cadastroTituloService.excluir(codigo);
 	attributes.addFlashAttribute("mensagem", "Título excluído com sucesso!");
-	return "redirect:/titulos";
+	return "redirect:/titulos?descricao=";
+	}
+	
+	@RequestMapping(value = "/{codigo}/receber", method = RequestMethod.PUT)
+	public @ResponseBody String receber(@PathVariable Long codigo) {
+		return cadastroTituloService.receber(codigo);
 	}
 
 	@ModelAttribute("todosStatusTitulo")
